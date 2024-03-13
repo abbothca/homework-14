@@ -26,11 +26,11 @@ const clearTasksFromStorage = () => {
     localStorage.removeItem(TASKS_STORAGE_KEY);
 };
 
-const removeTaskFromStorage = (deletedTask) => {
+const removeTaskFromStorage = (indexOfRemovedLi) => {
     const tasks = getTasksFromStorage();
 
-    const deletedIndex = tasks.findIndex((task) => task === deletedTask);
-    tasks.splice(deletedIndex, 1);
+    // Люба: видаляємо елмент масива з індексом indexOfRemovedLi
+    tasks.splice(indexOfRemovedLi, 1);
 
     localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
 };
@@ -84,11 +84,13 @@ const removeTask = (event) => {
     }
 
     const li = event.target.closest("li");
+    //Люба: визначаємо порядковий індекс li 
+    const indexOfRemovedLi = [...taskList.childNodes].indexOf(li);
     li.remove();
 
-    // Видалити зі сховища
-    const deletedTask = li.textContent.trim();
-    removeTaskFromStorage(deletedTask);
+    // Видалити зі сховища 
+    // Люба: елемент з індексом
+    removeTaskFromStorage(indexOfRemovedLi);
 };
 
 const filterTasks = ({ target: { value } }) => {
