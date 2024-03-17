@@ -29,21 +29,75 @@ const clearTasksFromStorage = () => {
 const removeTaskFromStorage = (indexOfRemovedLi) => {
     const tasks = getTasksFromStorage();
 
-    // Люба: видаляємо елмент масива з індексом indexOfRemovedLi
+    // @Liuba : видаляємо елмент масива з індексом indexOfRemovedLi
     tasks.splice(indexOfRemovedLi, 1);
 
     localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
 };
 
+const updateTaskInStorage = (newValue, index) => {
+    const tasks = getTasksFromStorage();
+
+    // @Liuba : записуємо нове значення
+    tasks[index] = newValue;
+
+    localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
+}
+
 //
 
 // "tasks" functions
-const appendLi = (value) => {
+// @Liuba : Згенерувати HTML структуру
+const getHTMLForLi = (value) => {
+    return `
+        <div class="collection__item">
+            <span class="collection__value">${value}</span>
+            <span class="collection__controls">
+                <i class="fa fa-edit edit-item collection__button" role="button" tabindex="0" title="Редагувати завдання"></i>
+                <i class="fa fa-remove delete-item collection__button" role="button" tabindex="0" title="Видалити завдання"></i>
+            </span>
+        </div>`
+}
+
+// @Liuba : модифікувала, додавши можлисість вставляти в позицію з індексом
+const appendLi = (value, oldLi = undefined) => {
     // Create and add LI element
     const li = document.createElement("li");
-    li.innerHTML = `${value} <i class="fa fa-remove delete-item"></i>`;
+    li.innerHTML = getHTMLForLi(value);
+
+    if (oldLi) {
+        oldLi.before(li);
+
+        return;
+    }
+
     taskList.append(li);
 };
+
+const getIndexOfLi = (li) => {
+    return [...taskList.childNodes].indexOf(li);
+};
+
+// @Liuba : Редагувати елемент li
+const editLi = (li) => {
+    const value = prompt("New value", li.textContent.trim());
+
+    if (!value) return;
+
+    updateTaskInStorage(value, getIndexOfLi(li));
+    appendLi(value, li);
+    li.remove();
+};
+// @Liuba : Винесемо як окрему функцію видалення
+const removeLi = (li) => {
+    //@Liuba : визначаємо порядковий індекс li 
+    const indexOfRemovedLi = getIndexOfLi(li);
+    li.remove();
+
+    // Видалити зі сховища 
+    // @Liuba : елемент з індексом
+    removeTaskFromStorage(indexOfRemovedLi);
+}
 
 const addTask = (event) => {
     event.preventDefault();
@@ -72,9 +126,19 @@ const clearTasks = () => {
     clearTasksFromStorage();
 };
 
-const removeTask = (event) => {
-    const isDeleteButton = event.target.classList.contains("delete-item");
-    if (!isDeleteButton) {
+// @Liuba : перейменувала функцію і додала можливість не тільки видаляти, а й редагувати
+const updateTaskList = ({ target }) => {
+    const isDeleteButton = target.classList.contains("delete-item");
+    const isEditButton = target.classList.contains("edit-item");
+    if (!isDeleteButton && !isEditButton) {
+        return;
+    }
+
+    const li = target.closest("li");
+
+    if (isEditButton) {
+        editLi(li);
+
         return;
     }
 
@@ -83,14 +147,7 @@ const removeTask = (event) => {
         return;
     }
 
-    const li = event.target.closest("li");
-    //Люба: визначаємо порядковий індекс li 
-    const indexOfRemovedLi = [...taskList.childNodes].indexOf(li);
-    li.remove();
-
-    // Видалити зі сховища 
-    // Люба: елемент з індексом
-    removeTaskFromStorage(indexOfRemovedLi);
+    removeLi(li);
 };
 
 const filterTasks = ({ target: { value } }) => {
@@ -99,14 +156,15 @@ const filterTasks = ({ target: { value } }) => {
 
     list.forEach((li) => {
         const liText = li.textContent.trim().toLowerCase();
-
         li.hidden = !liText.includes(text);
     });
 };
 
 const initTasks = () => {
     const tasks = getTasksFromStorage();
-    tasks.forEach(appendLi);
+    // @Liuba : не можу використати скорочену форму, бо
+    // forEach(appendLi) передаватиме в якості другого параметра індекс, а мені треба щоб туди йшло undefined
+    tasks.forEach((item) => appendLi(item));
 };
 
 // Init
@@ -117,6 +175,6 @@ form.addEventListener("submit", addTask);
 
 clearButton.addEventListener("click", clearTasks);
 
-taskList.addEventListener("click", removeTask);
+taskList.addEventListener("click", updateTaskList);
 
 filterInput.addEventListener("input", filterTasks);

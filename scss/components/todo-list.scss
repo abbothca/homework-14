@@ -1,0 +1,66 @@
+@use "../custom/variables.scss" as *;
+@use "../custom/mixin.scss" as mixin;
+@use "../elements/btn.scss";
+@use "../elements/block-title.scss";
+@use "../elements/input-field.scss";
+@use "../elements/collection.scss";
+
+.todo-list {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: $width-todo-container;
+    padding: $controls-padding-y $controls-padding-x;
+
+    
+    &__title,
+    &__create-task-block,
+    &__filter-task-block {
+        @include mixin.glass-effect;
+        padding: $block-padding-y $block-padding-x ;
+        margin: $block-padding-y 0;
+    }
+
+    &__title {
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 600;
+        padding: 2 * $block-padding-y 0;
+    }
+
+    &__block-title {
+        padding: $block-padding-y 0;
+    }
+
+    &__task-title {
+        margin: 0 0 10px;
+    }
+
+    &__input-field {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+    &__create-task-form {
+        position: relative;
+    }
+
+    &__clear-tasks {
+        margin: 2*$block-padding-y 0 $block-padding-y;
+    }
+
+}
+
+@media screen and (max-width: $break-point) {
+    .todo-list {
+        padding: $controls-padding-y $controls-padding-x-min;
+
+        &__title,
+        &__create-task-block,
+        &__filter-task-block {
+            padding: $block-padding-y $block-padding-x-min;
+        }
+    }
+}

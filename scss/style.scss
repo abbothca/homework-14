@@ -1,0 +1,43 @@
+@use "./custom/variables.scss" as *;
+@use "./components/todo-list.scss";
+
+body,
+html {
+    font-family: "Rubik", Arial, Helvetica, sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    color: $color-text;
+}
+
+.main {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+
+    &::after,
+    &::before {
+        content: "";
+        position: fixed;
+        display: block;
+        inset: 0;
+    }
+
+    &::before {
+        background-image: url("../img/icon.svg");
+        background-repeat: no-repeat;
+        background-position: 7% 0%;
+        background-size: contain;
+        opacity: 0.35;
+    }
+
+    &::after {
+        background-image: linear-gradient(to right top,
+                rgb(109, 109, 228) 0%,
+                rgb(167, 62, 147) 60%,
+                rgb(192, 64, 113) 100%);
+        object-fit: cover;
+        z-index: -1;
+    }
+
+}
