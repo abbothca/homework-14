@@ -26,11 +26,11 @@ const clearTasksFromStorage = () => {
     localStorage.removeItem(TASKS_STORAGE_KEY);
 };
 
-const removeTaskFromStorage = (indexOfRemovedLi) => {
+const removeTaskFromStorage = (index) => {
     const tasks = getTasksFromStorage();
 
     // @Liuba : видаляємо елмент масива з індексом indexOfRemovedLi
-    tasks.splice(indexOfRemovedLi, 1);
+    tasks.splice(index, 1);
 
     localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
 };
@@ -48,7 +48,7 @@ const updateTaskInStorage = (newValue, index) => {
 
 // "tasks" functions
 // @Liuba : Згенерувати HTML структуру
-const getHTMLForLi = (value) => {
+const getLiTemplate  = (value) => {
     return `
         <div class="collection__item">
             <span class="collection__value">${value}</span>
@@ -60,16 +60,10 @@ const getHTMLForLi = (value) => {
 }
 
 // @Liuba : модифікувала, додавши можлисість вставляти в позицію з індексом
-const appendLi = (value, oldLi = undefined) => {
+const appendLi = (value) => {
     // Create and add LI element
     const li = document.createElement("li");
-    li.innerHTML = getHTMLForLi(value);
-
-    if (oldLi) {
-        oldLi.before(li);
-
-        return;
-    }
+    li.innerHTML = getLiTemplate (value);
 
     taskList.append(li);
 };
@@ -85,8 +79,9 @@ const editLi = (li) => {
     if (!value) return;
 
     updateTaskInStorage(value, getIndexOfLi(li));
-    appendLi(value, li);
-    li.remove();
+    // @Liuba : шукаємо елемент за класом collection__value і редагуємо значення
+    li.querySelector(".collection__value").textContent = value;
+    console.log("upd")
 };
 // @Liuba : Винесемо як окрему функцію видалення
 const removeLi = (li) => {
@@ -162,9 +157,7 @@ const filterTasks = ({ target: { value } }) => {
 
 const initTasks = () => {
     const tasks = getTasksFromStorage();
-    // @Liuba : не можу використати скорочену форму, бо
-    // forEach(appendLi) передаватиме в якості другого параметра індекс, а мені треба щоб туди йшло undefined
-    tasks.forEach((item) => appendLi(item));
+    tasks.forEach(appendLi);
 };
 
 // Init
