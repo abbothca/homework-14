@@ -1,0 +1,11 @@
+.block-title{
+    margin: 0 0 5px 0;
+
+    &__icon{
+        display: inline-block;
+        margin-right: 5px;
+        pointer-events: none;        
+        color: #0c042a;
+        letter-spacing: 2.3px;
+    }
+}

@@ -1,0 +1,63 @@
+@use "../custom/variables.scss" as *;
+@use "../custom/mixin.scss" as mixin;
+
+.collection {
+    counter-reset: section;
+    margin-top: 2 * $block-padding-y;
+
+    &__item {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        padding: calc($controls-padding-y / 2) $controls-padding-x calc($controls-padding-y / 2) calc($controls-padding-x + $task-number-width);
+        margin: 5px 0;
+        background-color: lighten($secondary-color, 40%);
+        @include mixin.transition-property(background-color);
+
+        &:hover {
+            background-color: lighten($secondary-color, 20%);
+        }
+
+        &::before {
+            counter-increment: section;
+            content: counter(section);
+            position: absolute;
+            inset: 0;
+            right: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: $task-number-width;
+            padding: 5px;
+            margin-right: 10px;
+            background-color: $third-color;
+            font-size: 10px;
+            line-height: 1;
+            color: $color-text-contrast;
+            text-align: center;
+        }
+    }
+
+    &__value {
+        width: calc(100% - 40px);
+        padding-right: $controls-padding-x;
+    }
+
+    &__controls {
+        width: 40px;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-self: center;
+    }
+
+    &__button {
+        cursor: pointer;
+        @include mixin.transition-property(color);
+
+        &:hover,
+        &:focus {
+            color: $color-text-contrast;
+        }
+    }
+}

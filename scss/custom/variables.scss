@@ -1,0 +1,26 @@
+// Colors
+$primary-color: hsl(253, 83%, 9%);
+$secondary-color: #851cab;
+$third-color: #854874;
+$accent-color: #f173f9;
+
+$color-text: $primary-color;
+$color-text-contrast: #fff;
+
+// Paddings and Margins
+$controls-padding-x: 20px;
+$controls-padding-y: 10px;
+$block-padding-x: 20px;
+$block-padding-y: 15px;
+
+$width-todo-container: 500px;
+$button-width: 160px;
+$task-number-width: 30px;
+
+$border-radius: 5px;
+
+// break point
+$break-point: 500px;
+$controls-padding-x-min: 10px;
+$block-padding-x-min: 10px;
+$task-number-width-min: 20px;

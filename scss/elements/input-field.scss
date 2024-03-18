@@ -1,0 +1,75 @@
+@use "../custom/variables.scss" as *;
+
+.input-field {
+    position: relative;
+    margin-bottom: $block-padding-y;
+
+    &__input {
+        padding: $controls-padding-y $controls-padding-x;
+        width: 100%;
+        line-height: 1.6;
+        border-radius: 5px;
+        border: none;
+
+        &--btn{
+            padding-right: calc($button-width + $controls-padding-x);
+        }
+
+        &--icon{
+            padding-left: calc($controls-padding-x * 2);
+        }
+
+        &:focus {
+            outline: 3px solid $accent-color;
+        }
+    }
+
+    &__icon{
+        position: absolute;
+        display: flex;
+        align-items: center;
+        left: calc($controls-padding-x / 2);
+        height: 100%;
+        font-size: 16px;
+        color: $third-color;
+        pointer-events: none;
+    }
+
+    &__btn {
+        position: absolute;
+        display: inline-block;
+        width: $button-width;
+        margin: 0;
+        right: -1px;
+        bottom: 0;
+        z-index: 2;
+        border-radius: 0 $border-radius  $border-radius 0;
+        line-height: 1.6;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
+@media screen and (max-width: $break-point) {
+    .todo-list {
+        padding: $controls-padding-y $controls-padding-x-min;
+
+        &__title,
+        &__create-task-block,
+        &__filter-task-block {
+            padding: $block-padding-y $block-padding-x-min;
+        }
+    }
+
+    .input-field {
+        &__input--btn {
+            padding-right: $block-padding-x;
+        }
+
+        &__btn {
+            position: relative;
+            border-radius: $border-radius;
+        }
+    }
+}
