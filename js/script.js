@@ -48,7 +48,7 @@ const updateTaskInStorage = (newValue, index) => {
 
 // "tasks" functions
 // @Liuba : Згенерувати HTML структуру
-const getLiTemplate  = (value) => {
+const getLiTemplate = (value) => {
     return `
         <div class="collection__item">
             <span class="collection__value">${value}</span>
@@ -63,7 +63,7 @@ const getLiTemplate  = (value) => {
 const appendLi = (value) => {
     // Create and add LI element
     const li = document.createElement("li");
-    li.innerHTML = getLiTemplate (value);
+    li.innerHTML = getLiTemplate(value);
 
     taskList.append(li);
 };
@@ -169,5 +169,10 @@ form.addEventListener("submit", addTask);
 clearButton.addEventListener("click", clearTasks);
 
 taskList.addEventListener("click", updateTaskList);
+taskList.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+        updateTaskList(event)
+    }
+});
 
 filterInput.addEventListener("input", filterTasks);
