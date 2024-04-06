@@ -1,35 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="додаток ToDoList для створення списку справ, які необхідно виконати">
+    <meta name="keywords" content="додаток, список, завдання">
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png">
+    <link rel="manifest" href="./favicon/site.webmanifest">
+    <link rel="mask-icon" href="./favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
-    <title>Список завдань</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/style.css">
+    <title>Список завдань</title>
 </head>
 
-<body>
-    <div class="container">
-        <div class="create-task-block">
-            <form class="create-task-form">
-                <h3 class="task-title">Нове завдання</h3>
-                <div class="input-field">
-                    <input type="text" name="task" class="task-input" />
+<body class="main">
+    <div class="container todo-list">
+        <h2 class="todo-list__title block-title">Just do it!</h2>
+        <div class="create-task-block todo-list__create-task-block">
+            <form class="create-task-form todo-list__create-task-form">
+                <h3 class="task-title todo-list__block-title block-title"><i class="block-title__icon fa fa-pencil"
+                        aria-hidden="true"></i>Нове завдання</h3>
+                <div class="input-field todo-list__input-field">
+                    <input type="text" name="task"
+                        class="task-input input-field__input input-field__input--btn todo-list__task-input" />
                 </div>
-                <button type="submit" class="btn">Додати завдання</button>
+                <button type="submit" class="btn input-field__btn todo-list__submit">Додати завдання</button>
             </form>
         </div>
 
-        <div class="filter-task-block">
-            <h3 class="task-title">Список завдань</h3>
-            <div class="input-field">
-                <input type="text" name="filter" class="filter-input" placeholder="Пошук завдань" />
+        <div class="filter-task-block todo-list__filter-task-block">
+            <h3 class="task-title todo-list__block-title block-title"><i class="block-title__icon fa fa-list-ul"
+                    aria-hidden="true"></i>Список завдань</h3>
+            <div class="input-field todo-list__input-field" role="search">
+                <i class="input-field__icon fa fa-search" aria-hidden="true"></i>
+                <input type="text" name="filter"
+                    class="filter-input input-field__input input-field__input--icon todo-list__filter-input"
+                    placeholder="Пошук завдань" title="Почніть вводити текст завдання, яке слід знайти" type="search" />
             </div>
-            <ul class="collection"></ul>
-            <button class="clear-tasks">Видалити всі завдання</button>
+            <ul class="collection todo-list__collection"></ul>
+            <button class="btn clear-tasks todo-list__clear-tasks">Видалити всі завдання</button>
         </div>
     </div>
 

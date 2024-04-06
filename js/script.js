@@ -26,24 +26,73 @@ const clearTasksFromStorage = () => {
     localStorage.removeItem(TASKS_STORAGE_KEY);
 };
 
-const removeTaskFromStorage = (deletedTask) => {
+const removeTaskFromStorage = (index) => {
     const tasks = getTasksFromStorage();
 
-    const deletedIndex = tasks.findIndex((task) => task === deletedTask);
-    tasks.splice(deletedIndex, 1);
+    // @Liuba : видаляємо елмент масива з індексом indexOfRemovedLi
+    tasks.splice(index, 1);
 
     localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
 };
 
+const updateTaskInStorage = (newValue, index) => {
+    const tasks = getTasksFromStorage();
+
+    // @Liuba : записуємо нове значення
+    tasks[index] = newValue;
+
+    localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
+}
+
 //
 
 // "tasks" functions
+// @Liuba : Згенерувати HTML структуру
+const getLiTemplate  = (value) => {
+    return `
+        <div class="collection__item">
+            <span class="collection__value">${value}</span>
+            <span class="collection__controls">
+                <i class="fa fa-edit edit-item collection__button" role="button" tabindex="0" title="Редагувати завдання"></i>
+                <i class="fa fa-remove delete-item collection__button" role="button" tabindex="0" title="Видалити завдання"></i>
+            </span>
+        </div>`
+}
+
+// @Liuba : модифікувала, додавши можлисість вставляти в позицію з індексом
 const appendLi = (value) => {
     // Create and add LI element
     const li = document.createElement("li");
-    li.innerHTML = `${value} <i class="fa fa-remove delete-item"></i>`;
+    li.innerHTML = getLiTemplate (value);
+
     taskList.append(li);
 };
+
+const getIndexOfLi = (li) => {
+    return [...taskList.childNodes].indexOf(li);
+};
+
+// @Liuba : Редагувати елемент li
+const editLi = (li) => {
+    const value = prompt("New value", li.textContent.trim());
+
+    if (!value) return;
+
+    updateTaskInStorage(value, getIndexOfLi(li));
+    // @Liuba : шукаємо елемент за класом collection__value і редагуємо значення
+    li.querySelector(".collection__value").textContent = value;
+    console.log("upd")
+};
+// @Liuba : Винесемо як окрему функцію видалення
+const removeLi = (li) => {
+    //@Liuba : визначаємо порядковий індекс li 
+    const indexOfRemovedLi = getIndexOfLi(li);
+    li.remove();
+
+    // Видалити зі сховища 
+    // @Liuba : елемент з індексом
+    removeTaskFromStorage(indexOfRemovedLi);
+}
 
 const addTask = (event) => {
     event.preventDefault();
@@ -72,9 +121,19 @@ const clearTasks = () => {
     clearTasksFromStorage();
 };
 
-const removeTask = (event) => {
-    const isDeleteButton = event.target.classList.contains("delete-item");
-    if (!isDeleteButton) {
+// @Liuba : перейменувала функцію і додала можливість не тільки видаляти, а й редагувати
+const updateTaskList = ({ target }) => {
+    const isDeleteButton = target.classList.contains("delete-item");
+    const isEditButton = target.classList.contains("edit-item");
+    if (!isDeleteButton && !isEditButton) {
+        return;
+    }
+
+    const li = target.closest("li");
+
+    if (isEditButton) {
+        editLi(li);
+
         return;
     }
 
@@ -83,12 +142,7 @@ const removeTask = (event) => {
         return;
     }
 
-    const li = event.target.closest("li");
-    li.remove();
-
-    // Видалити зі сховища
-    const deletedTask = li.textContent.trim();
-    removeTaskFromStorage(deletedTask);
+    removeLi(li);
 };
 
 const filterTasks = ({ target: { value } }) => {
@@ -97,7 +151,6 @@ const filterTasks = ({ target: { value } }) => {
 
     list.forEach((li) => {
         const liText = li.textContent.trim().toLowerCase();
-
         li.hidden = !liText.includes(text);
     });
 };
@@ -115,6 +168,6 @@ form.addEventListener("submit", addTask);
 
 clearButton.addEventListener("click", clearTasks);
 
-taskList.addEventListener("click", removeTask);
+taskList.addEventListener("click", updateTaskList);
 
 filterInput.addEventListener("input", filterTasks);

@@ -1,0 +1,20 @@
+@use "../custom/variables.scss" as *;
+@use "../custom/mixin.scss" as mixin;
+
+.btn {
+    appearance: none;
+    padding: $controls-padding-y $controls-padding-x;
+    font-weight: 400;
+    color: $color-text-contrast;
+    letter-spacing: 0.5px;
+    background-color: $third-color;
+    border: none;
+    border-radius: $border-radius;
+    @include mixin.transition-property(background-color);
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+        background-color: darken($third-color, 15%);
+    }
+}
